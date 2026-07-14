@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "code": "HICS-001",
+    "title": "آیا بیمارستان ساختار فرماندهی حوادث را پیاده‌سازی کرده است؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "استقرار کامل ساختار فرماندهی حوادث بیمارستانی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "HICS-002",
+    "title": "آیا نمودار سازمانی فرماندهی حوادث با نقش‌ها و مسئولیت‌های مشخص تدوین شده است؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "تدوین و انتشار نمودار سازمانی فرماندهی حوادث",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "HICS-003",
+    "title": "آیا فرمانده حادثه و جانشین او مشخص شده‌اند؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "تعیین رسمی فرمانده حادثه و جانشین",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "HICS-004",
+    "title": "آیا کارکنان کلیدی آموزش نقش خود در ساختار فرماندهی حوادث را دیده‌اند؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "برگزاری آموزش نقش‌های فرماندهی حوادث",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "HICS-005",
+    "title": "آیا فرم‌ها و مستندات استاندارد فرماندهی حوادث در دسترس تیم مدیریت است؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "تهیه و توزیع فرم‌های استاندارد فرماندهی حوادث",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "HICS-006",
+    "title": "آیا تمرین یا مانور فعال‌سازی ساختار فرماندهی حوادث به‌صورت دوره‌ای برگزار می‌شود؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "برگزاری مانور دوره‌ای فعال‌سازی فرماندهی حوادث",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "HICS-007",
+    "title": "آیا فرآیند فعال‌سازی فرماندهی حوادث به‌روشنی تعریف شده است؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "تدوین رویه شفاف فعال‌سازی فرماندهی حوادث",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "HICS-008",
+    "title": "آیا اتاق فرماندهی حادثه با تجهیزات لازم مجهز است؟",
+    "category": "سیستم فرماندهی حوادث بیمارستانی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Hospital Incident Command System",
+    "recommendation": "تجهیز اتاق فرماندهی حادثه به امکانات لازم",
+    "evaluator_guide": ""
+  }
+]

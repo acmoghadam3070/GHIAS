@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "code": "CRS-001",
+    "title": "آیا بیمارستان دارای برنامه مدون مدیریت بحران و بلایا است؟",
+    "category": "مدیریت بحران",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تدوین برنامه جامع مدیریت بحران",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "CRS-002",
+    "title": "آیا برنامه بحران شامل سناریوهای زلزله، آتش‌سوزی و حملات تروریستی است؟",
+    "category": "مدیریت بحران",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تکمیل برنامه بحران با سناریوهای چندگانه",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "CRS-003",
+    "title": "آیا کارکنان کلیدی نقش مشخصی در برنامه مدیریت بحران دارند؟",
+    "category": "مدیریت بحران",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تعیین نقش و مسئولیت مشخص برای کارکنان کلیدی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "CRS-004",
+    "title": "آیا مانور مدیریت بحران به‌صورت دوره‌ای در بیمارستان اجرا می‌شود؟",
+    "category": "مدیریت بحران",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "برگزاری مانور دوره‌ای مدیریت بحران",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "CRS-005",
+    "title": "آیا سامانه ارتباطی پشتیبان غیر از تلفن معمولی برای شرایط بحرانی وجود دارد؟",
+    "category": "مدیریت بحران",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تجهیز به سامانه ارتباطی پشتیبان",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "CRS-006",
+    "title": "آیا مرکز فرماندهی بحران در بیمارستان تعریف شده است؟",
+    "category": "مدیریت بحران",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تعیین و تجهیز مکان مرکز فرماندهی بحران",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "CRS-007",
+    "title": "آیا منابع ضروری مانند آب، برق اضطراری و دارو برای حداقل هفتاد و دو ساعت ذخیره شده است؟",
+    "category": "مدیریت بحران",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "افزایش ذخیره منابع ضروری به هفتاد و دو ساعت",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "CRS-008",
+    "title": "آیا فرآیند تخلیه بیماران در شرایط اضطراری تدوین شده است؟",
+    "category": "مدیریت بحران",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تدوین رویه تخلیه بیماران در بحران",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 9,
+    "code": "CRS-009",
+    "title": "آیا هماهنگی با نهادهای بیرونی مانند آتش‌نشانی، پلیس و اورژانس از پیش تعریف شده است؟",
+    "category": "مدیریت بحران",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "انعقاد تفاهم‌نامه هماهنگی با نهادهای بیرونی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 10,
+    "code": "CRS-010",
+    "title": "آیا پس از هر رویداد یا مانور، گزارش ارزیابی و درس‌آموخته تهیه می‌شود؟",
+    "category": "مدیریت بحران",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "Emergency Management Standard",
+    "recommendation": "تدوین رویه مستندسازی درس‌آموخته‌ها",
+    "evaluator_guide": ""
+  }
+]

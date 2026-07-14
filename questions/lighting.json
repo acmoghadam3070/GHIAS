@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "code": "LGT-001",
+    "title": "آیا کلیه معابر و پارکینگ‌های بیمارستان دارای روشنایی کافی شبانه هستند؟",
+    "category": "روشنایی امنیتی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "تکمیل روشنایی معابر و پارکینگ‌ها",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "LGT-002",
+    "title": "آیا ورودی‌ها و خروجی‌های اضطراری روشنایی مناسب دارند؟",
+    "category": "روشنایی امنیتی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "تأمین روشنایی مناسب برای درهای اضطراری",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "LGT-003",
+    "title": "آیا روشنایی محیط پیرامونی و حصار به‌گونه‌ای است که نقطه کور ایجاد نکند؟",
+    "category": "روشنایی امنیتی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "رفع نقاط کور روشنایی در محیط پیرامونی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "LGT-004",
+    "title": "آیا سیستم روشنایی اضطراری در صورت قطع برق به‌طور خودکار فعال می‌شود؟",
+    "category": "روشنایی امنیتی",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "نصب سیستم روشنایی اضطراری خودکار",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "LGT-005",
+    "title": "آیا روشنایی نقاط نصب دوربین‌های مداربسته برای کیفیت تصویر شبانه کافی است؟",
+    "category": "روشنایی امنیتی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "هماهنگی روشنایی با محل نصب دوربین‌ها",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "LGT-006",
+    "title": "آیا بازرسی و تعویض چراغ‌های معیوب به‌صورت دوره‌ای انجام می‌شود؟",
+    "category": "روشنایی امنیتی",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "تدوین برنامه بازرسی دوره‌ای روشنایی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "LGT-007",
+    "title": "آیا سطح روشنایی محوطه با استانداردهای روشنایی امنیتی مطابقت دارد؟",
+    "category": "روشنایی امنیتی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "سنجش و اصلاح سطح روشنایی طبق استاندارد",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "LGT-008",
+    "title": "آیا در مسیرهای کم‌تردد از سنسورهای حرکتی برای روشنایی استفاده می‌شود؟",
+    "category": "روشنایی امنیتی",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "Security Lighting Standard",
+    "recommendation": "نصب سنسور حرکتی در مسیرهای کم‌تردد",
+    "evaluator_guide": ""
+  }
+]

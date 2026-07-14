@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "code": "PER-001",
+    "title": "آیا کل محوطه بیمارستان توسط حصار یا دیوار مناسب محصور شده است؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "احداث حصار پیرامونی کامل بیمارستان",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "PER-002",
+    "title": "آیا ارتفاع و استحکام حصار برای جلوگیری از عبور غیرمجاز کافی است؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "افزایش ارتفاع یا تقویت حصار موجود",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "PER-003",
+    "title": "آیا تعداد درهای ورودی و خروجی محدود و قابل کنترل است؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "کاهش و کنترل تعداد نقاط ورودی و خروجی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "PER-004",
+    "title": "آیا مسیرهای دسترسی خودرو و عابر پیاده به‌طور جداگانه کنترل می‌شوند؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "تفکیک فیزیکی مسیر خودرو از عابر پیاده",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "PER-005",
+    "title": "آیا موانع فیزیکی مانند بولارد در برابر نفوذ خودرو در ورودی‌های حساس نصب شده‌اند؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "نصب بولارد در ورودی‌های اورژانس و ساختمان اصلی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "PER-006",
+    "title": "آیا پارکینگ عمومی از بخش‌های حساس بیمارستان فاصله ایمن دارد؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "بازطراحی چیدمان پارکینگ با فاصله ایمن",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "PER-007",
+    "title": "آیا نقاط کور یا آسیب‌پذیر در محیط پیرامونی شناسایی و پوشش داده شده‌اند؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "انجام بازدید فنی و رفع نقاط کور امنیتی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "PER-008",
+    "title": "آیا تابلوهای هشدار و راهنما در محیط پیرامونی نصب شده‌اند؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "نصب تابلوهای هشداردهنده و راهنما",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 9,
+    "code": "PER-009",
+    "title": "آیا سامانه اعلام نفوذ روی حصار یا نقاط حساس پیرامونی نصب است؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "نصب سنسورهای اعلام نفوذ روی حصار",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 10,
+    "code": "PER-010",
+    "title": "آیا فضای سبز و درختان به‌گونه‌ای مدیریت می‌شوند که مانع دید نگهبانی و دوربین‌ها نشوند؟",
+    "category": "حصار و محیط پیرامونی",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "Perimeter Security",
+    "recommendation": "هرس منظم درختان و بوته‌های مسیر دید",
+    "evaluator_guide": ""
+  }
+]

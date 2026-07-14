@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "code": "FIR-001",
+    "title": "آیا سیستم اعلام حریق در تمامی بخش‌های بیمارستان نصب و فعال است؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "تکمیل پوشش سیستم اعلام حریق در تمام بخش‌ها",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "FIR-002",
+    "title": "آیا کپسول‌های اطفاء حریق در نقاط مناسب و قابل دسترس نصب شده‌اند؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "نصب کپسول اطفاء حریق در نقاط استاندارد",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "FIR-003",
+    "title": "آیا تاریخ انقضای کپسول‌های اطفاء حریق به‌طور منظم بررسی و شارژ می‌شود؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "تدوین برنامه بازرسی و شارژ دوره‌ای کپسول‌ها",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "FIR-004",
+    "title": "آیا سیستم اسپرینکلر در بخش‌های پرخطر مانند انبار و اتاق سرور نصب است؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "نصب سیستم اسپرینکلر در بخش‌های پرخطر",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "FIR-005",
+    "title": "آیا مسیرهای خروج اضطراری و پله‌های فرار مشخص و بدون مانع هستند؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "رفع موانع فیزیکی از مسیرهای خروج اضطراری",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "FIR-006",
+    "title": "آیا تابلوهای راهنمای خروج اضطراری روشن و قابل مشاهده هستند؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "نصب و تعمیر تابلوهای خروج اضطراری",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "FIR-007",
+    "title": "آیا مانور اطفاء حریق و تخلیه اضطراری به‌صورت دوره‌ای برگزار می‌شود؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "برگزاری مانور دوره‌ای اطفاء حریق",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "FIR-008",
+    "title": "آیا کارکنان آموزش استفاده از کپسول آتش‌نشانی را دیده‌اند؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "برگزاری آموزش استفاده از کپسول برای کارکنان",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 9,
+    "code": "FIR-009",
+    "title": "آیا نقشه راه‌های خروج و محل تجهیزات اطفاء حریق در معرض دید نصب شده است؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "نصب نقشه راه‌های خروج در نقاط دید",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 10,
+    "code": "FIR-010",
+    "title": "آیا سیستم اعلام حریق به مرکز نگهبانی یا اتاق کنترل متصل است؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "اتصال سیستم اعلام حریق به اتاق کنترل مرکزی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 11,
+    "code": "FIR-011",
+    "title": "آیا مواد قابل اشتعال مانند اکسیژن و الکل طبق پروتکل ایمن نگهداری می‌شوند؟",
+    "category": "آتش‌نشانی و اطفاء حریق",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "NFPA 101",
+    "recommendation": "اصلاح شرایط نگهداری مواد قابل اشتعال",
+    "evaluator_guide": ""
+  }
+]

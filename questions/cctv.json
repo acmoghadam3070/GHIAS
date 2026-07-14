@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "code": "CCTV-001",
+    "title": "آیا کلیه ورودی‌ها و خروجی‌های اصلی بیمارستان تحت پوشش دوربین مداربسته هستند؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "نصب دوربین در تمام نقاط ورود و خروج اصلی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "CCTV-002",
+    "title": "آیا راهروهای حساس مانند اتاق عمل، آی‌سی‌یو و داروخانه تحت پوشش دوربین هستند؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "پوشش دوربین برای بخش‌های حساس درمانی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "CCTV-003",
+    "title": "آیا سیستم ضبط تصاویر حداقل به مدت سی روز نگهداری می‌شود؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "افزایش ظرفیت ذخیره‌سازی به حداقل سی روز",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "CCTV-004",
+    "title": "آیا اتاق مانیتورینگ دوربین‌ها به‌صورت شبانه‌روزی پایش می‌شود؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "استقرار نیروی پایش شبانه‌روزی در اتاق کنترل",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "CCTV-005",
+    "title": "آیا دوربین‌های نصب‌شده قابلیت دید در شب را دارند؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "جایگزینی دوربین‌های فاقد قابلیت مادون‌قرمز",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "CCTV-006",
+    "title": "آیا محل نصب دوربین‌ها از دسترس افراد غیرمجاز و خرابکاری محافظت شده است؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "نصب دوربین در ارتفاع و محفظه محافظ مناسب",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "CCTV-007",
+    "title": "آیا تصاویر ضبط‌شده در برابر دستکاری یا حذف غیرمجاز محافظت می‌شوند؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "رمزنگاری و کنترل دسترسی به فایل‌های ضبط‌شده",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "CCTV-008",
+    "title": "آیا دسترسی به سامانه مشاهده و بازبینی تصاویر محدود به افراد مجاز است؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "تعریف سطح دسترسی برای کاربران سامانه تصویر",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 9,
+    "code": "CCTV-009",
+    "title": "آیا محیط پیرامونی بیمارستان شامل حصار و پارکینگ تحت پوشش دوربین است؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "توسعه پوشش دوربین به محیط پیرامونی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 10,
+    "code": "CCTV-010",
+    "title": "آیا در صورت قطعی برق، دوربین‌ها و دستگاه ضبط دارای منبع تغذیه پشتیبان هستند؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "تجهیز سیستم دوربین به UPS اختصاصی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 11,
+    "code": "CCTV-011",
+    "title": "آیا تعمیر و نگهداری دوره‌ای دوربین‌ها و سیستم ضبط انجام می‌شود؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "تدوین برنامه سرویس دوره‌ای تجهیزات",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 12,
+    "code": "CCTV-012",
+    "title": "آیا محل نگهداری دستگاه ضبط‌کننده تصاویر دارای کنترل دسترسی فیزیکی است؟",
+    "category": "دوربین‌های مداربسته (CCTV)",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "CCTV Systems Standard",
+    "recommendation": "استقرار دستگاه ضبط در اتاق قفل‌دار",
+    "evaluator_guide": ""
+  }
+]

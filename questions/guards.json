@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "code": "GRD-001",
+    "title": "آیا بیمارستان به‌صورت شبانه‌روزی دارای نیروی نگهبانی آموزش‌دیده است؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "استقرار نگهبانی شبانه‌روزی در تمام شیفت‌ها",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "GRD-002",
+    "title": "آیا نگهبانان دوره آموزشی حفاظت فیزیکی و مقابله با تهدید را گذرانده‌اند؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "برگزاری دوره آموزشی تخصصی برای نگهبانان",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "GRD-003",
+    "title": "آیا گشت‌زنی منظم در محوطه بیمارستان طبق برنامه مشخص انجام می‌شود؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "تدوین برنامه زمان‌بندی‌شده گشت‌زنی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "GRD-004",
+    "title": "آیا گزارش گشت‌زنی به‌صورت مکتوب یا الکترونیک ثبت می‌شود؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "استقرار سامانه ثبت الکترونیک گشت‌زنی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "GRD-005",
+    "title": "آیا نگهبانی ورودی اصلی دید کامل به پارکینگ و درهای ورودی دارد؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "بازطراحی جایگاه نگهبانی برای دید کامل",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "GRD-006",
+    "title": "آیا نگهبانان به سیستم ارتباطی بی‌سیم یا تلفن برای هماهنگی مجهز هستند؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "تجهیز نگهبانان به بی‌سیم ارتباطی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "GRD-007",
+    "title": "آیا فرآیند مشخصی برای احراز هویت و ثبت مراجعین توسط نگهبانی وجود دارد؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "تدوین رویه احراز هویت و ثبت مراجعین",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "GRD-008",
+    "title": "آیا بخش اورژانس نگهبانی جداگانه و با پوشش کامل دارد؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "استقرار نگهبان اختصاصی در ورودی اورژانس",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 9,
+    "code": "GRD-009",
+    "title": "آیا نگهبانان آموزش تخلیه اضطراری و کمک‌های اولیه دیده‌اند؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "برگزاری آموزش تخلیه اضطراری برای نگهبانان",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 10,
+    "code": "GRD-010",
+    "title": "آیا تعداد نیروی نگهبانی متناسب با وسعت و ترافیک بیمارستان است؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "بازنگری تعداد نیروی نگهبانی بر اساس نیاز",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 11,
+    "code": "GRD-011",
+    "title": "آیا اتاق نگهبانی مرکزی به دوربین‌ها و سامانه اعلام سرقت دسترسی دارد؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "اتصال اتاق نگهبانی به سامانه‌های امنیتی مرکزی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 12,
+    "code": "GRD-012",
+    "title": "آیا رویه مشخصی برای برخورد با افراد مشکوک یا متخاصم تعریف شده است؟",
+    "category": "نگهبانی و گشت‌زنی",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "Security Personnel Management",
+    "recommendation": "تدوین دستورالعمل برخورد با موارد مشکوک",
+    "evaluator_guide": ""
+  }
+]

@@ -1,0 +1,222 @@
+[
+    {
+        "id": 1,
+        "code": "AC-001",
+        "title": "آیا ورود و خروج کارکنان بیمارستان به صورت کنترل‌شده انجام می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Access Control",
+        "recommendation": "استقرار سیستم کنترل تردد و ثبت ورود و خروج کارکنان",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 2,
+        "code": "AC-002",
+        "title": "آیا برای کارکنان کارت شناسایی معتبر صادر شده است؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Access Control",
+        "recommendation": "ایجاد فرآیند صدور، تمدید و ابطال کارت شناسایی",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 3,
+        "code": "AC-003",
+        "title": "آیا دسترسی افراد به بخش‌های حساس بیمارستان محدود شده است؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Restricted Area Management",
+        "recommendation": "تعریف سطوح دسترسی برای بخش‌های حساس",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 4,
+        "code": "AC-004",
+        "title": "آیا ورود به اتاق سرور، داروخانه، انبار دارویی و بخش‌های حیاتی کنترل می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Critical Area Protection",
+        "recommendation": "استفاده از کنترل دسترسی الکترونیکی برای مناطق حیاتی",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 5,
+        "code": "AC-005",
+        "title": "آیا ورود پیمانکاران و نیروهای خدماتی ثبت و کنترل می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Visitor Management",
+        "recommendation": "ایجاد فرآیند ثبت ورود پیمانکاران و همراهی توسط مسئول مربوطه",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 6,
+        "code": "AC-006",
+        "title": "آیا سیستم ثبت ورود و خروج مراجعین و همراهان بیماران وجود دارد؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Visitor Control",
+        "recommendation": "راه‌اندازی سیستم ثبت و کنترل مراجعین",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 7,
+        "code": "AC-007",
+        "title": "آیا برای بخش‌های ویژه مانند ICU، NICU و اتاق عمل کنترل دسترسی وجود دارد؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Critical Area Security",
+        "recommendation": "محدودسازی ورود افراد غیرمجاز به بخش‌های ویژه",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 8,
+        "code": "AC-008",
+        "title": "آیا کارت‌های دسترسی پس از قطع همکاری کارکنان غیرفعال می‌شوند؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Access Lifecycle Management",
+        "recommendation": "ایجاد فرآیند حذف دسترسی کارکنان خارج‌شده",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 9,
+        "code": "AC-009",
+        "title": "آیا لیست افراد دارای دسترسی به مناطق حساس به صورت دوره‌ای بازبینی می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Access Review",
+        "recommendation": "بازنگری دوره‌ای مجوزهای دسترسی",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 10,
+        "code": "AC-010",
+        "title": "آیا ورود افراد متفرقه بدون مجوز به محیط بیمارستان جلوگیری می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Physical Security",
+        "recommendation": "تقویت کنترل ورودی‌های اصلی",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 11,
+        "code": "AC-011",
+        "title": "آیا ورودی‌های بیمارستان دارای مسئول کنترل و نظارت هستند؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Entrance Security",
+        "recommendation": "تعیین مسئول مشخص برای کنترل ورودی‌ها",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 12,
+        "code": "AC-012",
+        "title": "آیا ورود خودروها به محدوده بیمارستان کنترل می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Vehicle Access Control",
+        "recommendation": "ایجاد فرآیند کنترل تردد خودروها",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 13,
+        "code": "AC-013",
+        "title": "آیا پارکینگ بیمارستان دارای کنترل دسترسی است؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Parking Security",
+        "recommendation": "استفاده از سیستم ثبت پلاک یا مجوز ورود",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 14,
+        "code": "AC-014",
+        "title": "آیا ورود افراد دارای مجوز موقت ثبت و مدیریت می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Temporary Access",
+        "recommendation": "صدور کارت موقت با زمان اعتبار مشخص",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 15,
+        "code": "AC-015",
+        "title": "آیا کلیدهای فیزیکی بخش‌های مهم مدیریت و ثبت می‌شوند؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Key Management",
+        "recommendation": "ایجاد سیستم تحویل و ثبت کلیدها",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 16,
+        "code": "AC-016",
+        "title": "آیا اتاق‌های تجهیزات حیاتی دارای قفل مناسب هستند؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Physical Protection",
+        "recommendation": "ارتقای قفل و کنترل دسترسی اتاق‌های حیاتی",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 17,
+        "code": "AC-017",
+        "title": "آیا دسترسی کارکنان بر اساس وظیفه شغلی تعریف شده است؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Role Based Access",
+        "recommendation": "پیاده‌سازی دسترسی مبتنی بر نقش",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 18,
+        "code": "AC-018",
+        "title": "آیا ورود و خروج پرسنل نگهبانی ثبت و قابل گزارش‌گیری است؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Security Monitoring",
+        "recommendation": "ایجاد سیستم ثبت عملکرد نگهبانان",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 19,
+        "code": "AC-019",
+        "title": "آیا مسیر ورود بیماران، کارکنان و خدماتی از یکدیگر تفکیک شده است؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "Traffic Separation",
+        "recommendation": "تفکیک مسیرهای دسترسی",
+        "evaluator_guide": ""
+    },
+    {
+        "id": 20,
+        "code": "AC-020",
+        "title": "آیا کنترل دسترسی در ساعات غیراداری تشدید می‌شود؟",
+        "category": "کنترل دسترسی",
+        "weight": 5,
+        "answer_type": "yes_no",
+        "standard": "After Hours Security",
+        "recommendation": "تعریف کنترل ویژه برای ساعات کم‌تردد",
+        "evaluator_guide": ""
+    }
+]

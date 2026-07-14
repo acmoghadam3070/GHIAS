@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "code": "SRV-001",
+    "title": "آیا دسترسی فیزیکی به اتاق سرور محدود به افراد مجاز است؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "محدودسازی دسترسی فیزیکی اتاق سرور",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 2,
+    "code": "SRV-002",
+    "title": "آیا ورود به اتاق سرور از طریق کارت یا رمز کنترل می‌شود؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "نصب سامانه کنترل دسترسی برای اتاق سرور",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 3,
+    "code": "SRV-003",
+    "title": "آیا اتاق سرور دارای سیستم اطفاء حریق مناسب تجهیزات الکترونیکی است؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "نصب سیستم اطفاء حریق گازی مناسب تجهیزات",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 4,
+    "code": "SRV-004",
+    "title": "آیا دمای اتاق سرور توسط سیستم تهویه مناسب کنترل می‌شود؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "نصب یا بهبود سیستم تهویه و سرمایش اتاق سرور",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 5,
+    "code": "SRV-005",
+    "title": "آیا اتاق سرور تحت پوشش دوربین مداربسته است؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 4,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "نصب دوربین اختصاصی برای اتاق سرور",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 6,
+    "code": "SRV-006",
+    "title": "آیا تجهیزات سرور به منبع تغذیه بی‌وقفه مجهز هستند؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "تجهیز اتاق سرور به UPS با ظرفیت کافی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 7,
+    "code": "SRV-007",
+    "title": "آیا ورود و خروج افراد به اتاق سرور ثبت و مستند می‌شود؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "استقرار سامانه ثبت تردد اتاق سرور",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 8,
+    "code": "SRV-008",
+    "title": "آیا نسخه پشتیبان از اطلاعات حیاتی به‌صورت منظم و در مکانی امن نگهداری می‌شود؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 5,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "تدوین و اجرای برنامه پشتیبان‌گیری منظم",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 9,
+    "code": "SRV-009",
+    "title": "آیا کابل‌کشی و تجهیزات شبکه در برابر دسترسی غیرمجاز محافظت شده‌اند؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 2,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "استفاده از کاندوئیت و رک قفل‌دار برای کابل‌کشی",
+    "evaluator_guide": ""
+  },
+  {
+    "id": 10,
+    "code": "SRV-010",
+    "title": "آیا سامانه اعلام هشدار برای باز شدن غیرمجاز درب اتاق سرور فعال است؟",
+    "category": "اتاق سرور و فناوری اطلاعات",
+    "weight": 3,
+    "answer_type": "yes_no",
+    "standard": "IT Physical Security Standard",
+    "recommendation": "نصب سنسور اعلام باز شدن درب اتاق سرور",
+    "evaluator_guide": ""
+  }
+]
