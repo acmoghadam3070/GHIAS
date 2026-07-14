@@ -1,0 +1,42 @@
+# ==========================================================
+# GHIAS Project Requirements
+# Hospital Physical Security Assessment System
+# ==========================================================
+
+
+# GUI Framework
+PySide6==6.11.1
+PySide6_Addons==6.11.1
+PySide6_Essentials==6.11.1
+shiboken6==6.11.1
+
+
+# Database
+SQLAlchemy==2.0.51
+alembic==1.18.5
+greenlet==3.5.3
+
+
+# Data Processing & Reports
+openpyxl==3.1.5
+reportlab==5.0.0
+
+
+# Visualization
+pyqtgraph==0.14.0
+
+
+# Image Processing
+pillow==12.3.0
+
+
+# QR Code
+qrcode==8.2
+
+
+# Security
+bcrypt==5.0.0
+
+
+# Utilities
+typing_extensions==4.16.0
