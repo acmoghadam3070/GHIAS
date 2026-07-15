@@ -11,6 +11,23 @@
 PRAGMA foreign_keys = ON;
 
 -- =====================================================================
+-- جدول حوزه‌های کلان ارزیابی
+-- مثال: حفاظت فیزیکی، امنیت اطلاعات، پدافند غیرعامل، مدیریت بحران.
+-- این جدول امکان توسعه سامانه فراتر از حفاظت فیزیکی را فراهم می‌کند.
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS assessment_domains (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    domain_key TEXT UNIQUE NOT NULL,
+    domain_name TEXT NOT NULL,
+    description TEXT,
+    display_order INTEGER DEFAULT 0,
+    is_active INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- =====================================================================
 -- جدول انواع سازمان
 -- مثال: بیمارستان، کارخانه، اداره. این جدول امکان توسعه سامانه به
 -- سازمان‌های غیر از بیمارستان را در آینده فراهم می‌کند.
@@ -83,6 +100,7 @@ CREATE TABLE IF NOT EXISTS inspectors (
 CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     facility_type_id INTEGER NOT NULL,
+    domain_id INTEGER NOT NULL,
     category_key TEXT UNIQUE NOT NULL,
     category_name TEXT NOT NULL,
     description TEXT,
@@ -92,6 +110,10 @@ CREATE TABLE IF NOT EXISTS categories (
 
     FOREIGN KEY (facility_type_id)
         REFERENCES facility_types(id)
+        ON DELETE RESTRICT,
+
+    FOREIGN KEY (domain_id)
+        REFERENCES assessment_domains(id)
         ON DELETE RESTRICT
 );
 
@@ -133,6 +155,7 @@ ON questions(category_id);
 CREATE TABLE IF NOT EXISTS visits (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     facility_id INTEGER NOT NULL,
+    domain_id INTEGER NOT NULL,
     inspector_id INTEGER NOT NULL,
     visit_date DATE NOT NULL,
     visit_start_time TIME,
@@ -147,6 +170,10 @@ CREATE TABLE IF NOT EXISTS visits (
     FOREIGN KEY (facility_id)
         REFERENCES facilities(id)
         ON DELETE CASCADE,
+
+    FOREIGN KEY (domain_id)
+        REFERENCES assessment_domains(id)
+        ON DELETE RESTRICT,
 
     FOREIGN KEY (inspector_id)
         REFERENCES inspectors(id)
@@ -260,21 +287,25 @@ ON reports(visit_id);
 
 
 -- =====================================================================
--- داده اولیه: نوع سازمان پیش‌فرض (بیمارستان)
+-- داده اولیه: حوزه کلان پیش‌فرض (حفاظت فیزیکی) و نوع سازمان پیش‌فرض (بیمارستان)
 -- =====================================================================
+
+INSERT OR IGNORE INTO assessment_domains (domain_key, domain_name, display_order) VALUES
+    ('physical_security', 'حفاظت فیزیکی', 1);
 
 INSERT OR IGNORE INTO facility_types (type_key, type_name) VALUES
     ('hospital', 'بیمارستان');
 
 
 -- =====================================================================
--- داده اولیه: نُه حوزه ارزیابی بیمارستان طبق ساختار پروژه
+-- داده اولیه: نُه زیرحوزه ارزیابی بیمارستان طبق ساختار پروژه
 -- اگر این رکوردها از قبل وجود داشته باشند، دوباره درج نمی‌شوند.
 -- =====================================================================
 
-INSERT OR IGNORE INTO categories (facility_type_id, category_key, category_name, display_order)
-SELECT ft.id, c.category_key, c.category_name, c.display_order
+INSERT OR IGNORE INTO categories (facility_type_id, domain_id, category_key, category_name, display_order)
+SELECT ft.id, ad.id, c.category_key, c.category_name, c.display_order
 FROM facility_types ft
+JOIN assessment_domains ad ON ad.domain_key = 'physical_security'
 JOIN (
     SELECT 'access_control' AS category_key, 'کنترل دسترسی' AS category_name, 1 AS display_order
     UNION ALL SELECT 'cctv', 'دوربین‌های مداربسته (CCTV)', 2

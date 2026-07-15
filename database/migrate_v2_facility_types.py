@@ -3,27 +3,16 @@
 """
 =============================================================================
 سامانه GHIAS
-اسکریپت مهاجرت نسخه دوم پایگاه داده: پشتیبانی از چند نوع سازمان
+اسکریپت مهاجرت نسخه دوم پایگاه داده: پشتیبانی از چند نوع سازمان (نسخه اصلاح‌شده)
 =============================================================================
 
-این اسکریپت پایگاه داده موجود شما را از حالت «فقط بیمارستان» به یک مدل
-عمومی‌تر تبدیل می‌کند که در آینده می‌تواند کارخانه، اداره و سایر انواع
-سازمان را هم پشتیبانی کند.
+این نسخه اصلاح‌شده، هر مرحله را جداگانه و با احتیاط بررسی می‌کند، حتی اگر
+یک تلاش قبلی برای مهاجرت، ناقص یا ناموفق مانده باشد (مثلاً به‌خاطر اجرای
+اشتباهی create_database.sql روی یک پایگاه داده قدیمی).
 
-تغییرات انجام‌شده:
-    - ساخت جدول جدید facility_types (انواع سازمان): بیمارستان به‌عنوان
-      اولین نوع، به‌طور خودکار ثبت می‌شود.
-    - تغییر نام جدول hospitals به facilities.
-    - تغییر نام ستون hospital_name به facility_name.
-    - افزودن ستون facility_type_id به جدول facilities و categories.
-    - تغییر نام ستون hospital_id در جدول visits به facility_id.
-
-نکته مهم: این اسکریپت کاملاً بی‌خطر و قابل اجرای مکرر است. اگر قبلاً
-اجرا شده باشد (یعنی جدول facilities از قبل وجود داشته باشد)، دوباره
-هیچ تغییری اعمال نمی‌شود و فقط یک پیام اطلاع‌رسانی نمایش می‌دهد.
-
-هیچ داده‌ای (بیمارستان‌ها، سؤالات، بازدیدها، پاسخ‌ها) در این فرآیند
-حذف نمی‌شود؛ فقط نام جدول‌ها و ستون‌ها و ارتباط بین آن‌ها تغییر می‌کند.
+این اسکریپت هرگز داده‌ای که حداقل یک رکورد دارد را حذف نمی‌کند؛ فقط
+جدول‌های ناقص و کاملاً خالی که از یک تلاش نافرجام باقی مانده باشند را
+پاک‌سازی می‌کند تا مهاجرت واقعی بتواند به‌درستی انجام شود.
 =============================================================================
 """
 
@@ -43,36 +32,71 @@ def table_exists(con: sqlite3.Connection, table_name: str) -> bool:
     return row is not None
 
 
+def column_exists(con: sqlite3.Connection, table_name: str, column_name: str) -> bool:
+    rows = con.execute(f"PRAGMA table_info({table_name})").fetchall()
+    return any(row[1] == column_name for row in rows)
+
+
+def row_count(con: sqlite3.Connection, table_name: str) -> int:
+    return con.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()[0]
+
+
 def main() -> None:
     if not DB_PATH.exists():
         print(f"فایل پایگاه داده پیدا نشد: {DB_PATH}")
-        print("ابتدا حتماً database/database.py را یک بار اجرا کرده باشید.")
         return
 
     con = sqlite3.connect(str(DB_PATH))
+    con.execute("PRAGMA foreign_keys = OFF")
 
-    if table_exists(con, "facilities"):
+    hospitals_exists = table_exists(con, "hospitals")
+    facilities_exists = table_exists(con, "facilities")
+
+    # ------------------------------------------------------------- حالت ۱: مهاجرت کامل قبلاً انجام شده
+    if not hospitals_exists and facilities_exists:
         print("این پایگاه داده قبلاً به مدل چند نوع سازمان مهاجرت کرده است.")
         print("نیازی به هیچ تغییری نیست.")
         con.close()
         return
 
-    if not table_exists(con, "hospitals"):
-        print("جدول hospitals پیدا نشد؛ این پایگاه داده با نسخه‌ای متفاوت ساخته شده است.")
-        print("لطفاً قبل از ادامه، وضعیت را بررسی کنید.")
+    # ------------------------------------------------------------- حالت ۲: نه hospitals و نه facilities پیدا شد
+    if not hospitals_exists and not facilities_exists:
+        print("هیچ‌کدام از جدول‌های hospitals یا facilities پیدا نشد.")
+        print("این وضعیت غیرمنتظره است؛ لطفاً قبل از ادامه با من هماهنگ کنید.")
         con.close()
         return
 
+    # ------------------------------------------------------------- حالت ۳: پاک‌سازی باقیمانده تلاش ناموفق قبلی
     print("=" * 60)
     print("شروع مهاجرت پایگاه داده به مدل چند نوع سازمان")
     print("=" * 60)
 
-    con.execute("PRAGMA foreign_keys = OFF")
+    if facilities_exists:
+        count = row_count(con, "facilities")
+        if count == 0:
+            con.execute("DROP TABLE facilities")
+            con.commit()
+            print("یک جدول facilities خالی و ناقص (باقی‌مانده از تلاش قبلی) پاک‌سازی شد.")
+        else:
+            print(
+                f"توقف ایمنی: جدول facilities از قبل {count} رکورد دارد و جدول hospitals "
+                "هم هنوز وجود دارد. برای جلوگیری از خطر از دست رفتن داده، ادامه نمی‌دهم. "
+                "لطفاً این وضعیت را برای من گزارش کنید تا بررسی کنم."
+            )
+            con.close()
+            return
+
+    if table_exists(con, "facility_types"):
+        count = row_count(con, "facility_types")
+        if count == 0:
+            con.execute("DROP TABLE facility_types")
+            con.commit()
+            print("یک جدول facility_types خالی و ناقص پاک‌سازی شد.")
 
     # ------------------------------------------------------------- ۱. انواع سازمان
     con.execute(
         """
-        CREATE TABLE IF NOT EXISTS facility_types (
+        CREATE TABLE facility_types (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             type_key TEXT UNIQUE NOT NULL,
             type_name TEXT NOT NULL,
@@ -83,7 +107,7 @@ def main() -> None:
         """
     )
     con.execute(
-        "INSERT OR IGNORE INTO facility_types (type_key, type_name) VALUES ('hospital', 'بیمارستان')"
+        "INSERT INTO facility_types (type_key, type_name) VALUES ('hospital', 'بیمارستان')"
     )
     con.commit()
     print("جدول facility_types ساخته شد و نوع «بیمارستان» ثبت شد.")
@@ -94,11 +118,15 @@ def main() -> None:
 
     # ------------------------------------------------------------- ۲. جدول facilities
     con.execute("ALTER TABLE hospitals RENAME TO facilities")
-    con.execute("ALTER TABLE facilities RENAME COLUMN hospital_name TO facility_name")
-    con.execute("ALTER TABLE facilities RENAME COLUMN hospital_code TO facility_code")
-    con.execute(
-        "ALTER TABLE facilities ADD COLUMN facility_type_id INTEGER REFERENCES facility_types(id)"
-    )
+
+    if not column_exists(con, "facilities", "facility_name"):
+        con.execute("ALTER TABLE facilities RENAME COLUMN hospital_name TO facility_name")
+    if not column_exists(con, "facilities", "facility_code"):
+        con.execute("ALTER TABLE facilities RENAME COLUMN hospital_code TO facility_code")
+    if not column_exists(con, "facilities", "facility_type_id"):
+        con.execute(
+            "ALTER TABLE facilities ADD COLUMN facility_type_id INTEGER REFERENCES facility_types(id)"
+        )
     con.execute(
         "UPDATE facilities SET facility_type_id = ? WHERE facility_type_id IS NULL",
         (hospital_type_id,),
@@ -107,18 +135,20 @@ def main() -> None:
     print("جدول hospitals با موفقیت به facilities تبدیل شد.")
 
     # ------------------------------------------------------------- ۳. حوزه‌ها
-    con.execute(
-        "ALTER TABLE categories ADD COLUMN facility_type_id INTEGER REFERENCES facility_types(id)"
-    )
+    if not column_exists(con, "categories", "facility_type_id"):
+        con.execute(
+            "ALTER TABLE categories ADD COLUMN facility_type_id INTEGER REFERENCES facility_types(id)"
+        )
     con.execute(
         "UPDATE categories SET facility_type_id = ? WHERE facility_type_id IS NULL",
         (hospital_type_id,),
     )
     con.commit()
-    print("حوزه‌های موجود (نُه حوزه بیمارستانی) به نوع «بیمارستان» متصل شدند.")
+    print("حوزه‌های موجود به نوع «بیمارستان» متصل شدند.")
 
     # ------------------------------------------------------------- ۴. بازدیدها
-    con.execute("ALTER TABLE visits RENAME COLUMN hospital_id TO facility_id")
+    if not column_exists(con, "visits", "facility_id"):
+        con.execute("ALTER TABLE visits RENAME COLUMN hospital_id TO facility_id")
     con.commit()
     print("جدول visits به‌روزرسانی شد.")
 

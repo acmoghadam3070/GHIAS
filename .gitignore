@@ -26,6 +26,7 @@ env/
 # Database Files
 # ----------------------------------------------------------
 
+# Local SQLite databases
 *.db
 *.sqlite
 *.sqlite3
@@ -37,6 +38,9 @@ env/
 
 .vscode/
 .idea/
+
+*.sublime-project
+*.sublime-workspace
 
 
 # ----------------------------------------------------------
@@ -62,6 +66,8 @@ Thumbs.db
 *.bak
 
 temp/
+*/temp/
+
 photos/temp/
 reports/temp/
 
@@ -73,12 +79,16 @@ reports/temp/
 build/
 dist/
 
+*.spec
+
 
 # ----------------------------------------------------------
 # Environment & Secrets
 # ----------------------------------------------------------
 
 .env
+.env.*
+!.env.example
 
 
 # ----------------------------------------------------------
@@ -87,6 +97,7 @@ dist/
 
 .coverage
 .pytest_cache/
+htmlcov/
 
 
 # ----------------------------------------------------------
@@ -98,9 +109,49 @@ dist/
 
 
 # ----------------------------------------------------------
-# Generated Reports
+# Generated Files
 # ----------------------------------------------------------
 
-reports/excel/*.xlsx
-reports/pdf/*.pdf
-reports/word/*.docx
+# Excel imports generated locally
+*.xlsx~
+
+# Word temporary files
+~$*.docx
+
+# PDF temporary files
+*.pdf~
+
+
+# ----------------------------------------------------------
+# Application Generated Data
+# ----------------------------------------------------------
+
+# User generated reports
+reports/temp/
+
+# Local uploads
+uploads/temp/
+
+# Export cache
+cache/
+
+
+# ----------------------------------------------------------
+# OS Backup Files
+# ----------------------------------------------------------
+
+*.swp
+*.swo
+
+
+# ----------------------------------------------------------
+# Local Configuration
+# ----------------------------------------------------------
+
+config/local*
+settings/local*
+
+
+# ==========================================================
+# End of GHIAS .gitignore
+# ==========================================================

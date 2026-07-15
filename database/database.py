@@ -70,18 +70,186 @@ class Database:
     # ------------------------------------------------------------ ساخت جداول
     def initialize(self) -> None:
         """
-        اجرای فایل create_database.sql روی پایگاه داده.
-        این عملیات کاملاً بی‌خطر است و می‌تواند چندین‌بار اجرا شود؛
-        جدول‌های موجود دوباره ساخته نمی‌شوند (به‌خاطر IF NOT EXISTS).
+        آماده‌سازی کامل پایگاه داده، شامل دو مرحله:
+            ۱) اگر پایگاه داده نسخه قدیمی‌تری داشته باشد (مثلاً جدول hospitals
+               به‌جای facilities، یا فاقد لایه حوزه کلان ارزیابی)، خودکار و
+               بی‌خطر به آخرین نسخه ساختار مهاجرت داده می‌شود.
+            ۲) اجرای فایل create_database.sql برای ساخت جداولی که هنوز
+               وجود ندارند.
+
+        این متد کاملاً بی‌خطر است و روی هر پایگاه داده‌ای (تازه، قدیمی،
+        یا از قبل به‌روز) می‌تواند اجرا شود؛ در هر کامپیوتری که برنامه اجرا
+        شود، پایگاه داده محلی همان کامپیوتر خودش را به‌روزرسانی می‌کند.
         """
+        connection = self.connect()
+        self._migrate_legacy_schema(connection)
+
         if not self.schema_path.exists():
             raise FileNotFoundError(
                 f"فایل اسکیمای پایگاه داده پیدا نشد:\n{self.schema_path}"
             )
 
         sql_script = self.schema_path.read_text(encoding="utf-8")
-        connection = self.connect()
         connection.executescript(sql_script)
+        connection.commit()
+
+    # ------------------------------------------------------------ مهاجرت خودکار
+    def _table_exists(self, connection: sqlite3.Connection, table_name: str) -> bool:
+        row = connection.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?",
+            (table_name,),
+        ).fetchone()
+        return row is not None
+
+    def _column_exists(
+        self, connection: sqlite3.Connection, table_name: str, column_name: str
+    ) -> bool:
+        rows = connection.execute(f"PRAGMA table_info({table_name})").fetchall()
+        return any(row[1] == column_name for row in rows)
+
+    def _row_count(self, connection: sqlite3.Connection, table_name: str) -> int:
+        return connection.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()[0]
+
+    def _migrate_legacy_schema(self, connection: sqlite3.Connection) -> None:
+        """
+        اجرای خودکار تمام مهاجرت‌های لازم برای رساندن یک پایگاه داده قدیمی
+        به آخرین نسخه ساختار. هر مرحله مستقل بررسی می‌شود و فقط در صورت
+        نیاز واقعی اجرا می‌شود.
+        """
+        connection.execute("PRAGMA foreign_keys = OFF;")
+        self._migrate_v2_facility_types(connection)
+        self._migrate_v3_domains(connection)
+        connection.execute("PRAGMA foreign_keys = ON;")
+
+    def _migrate_v2_facility_types(self, connection: sqlite3.Connection) -> None:
+        """مهاجرت نسخه دوم: تبدیل جدول hospitals به مدل عمومی facilities."""
+        hospitals_exists = self._table_exists(connection, "hospitals")
+        facilities_exists = self._table_exists(connection, "facilities")
+
+        if not hospitals_exists:
+            return  # یا از قبل مهاجرت شده، یا پایگاه داده کاملاً تازه است
+
+        # پاک‌سازی باقیمانده احتمالی یک تلاش قبلی نافرجام
+        if facilities_exists:
+            if self._row_count(connection, "facilities") == 0:
+                connection.execute("DROP TABLE facilities")
+            else:
+                # حالت نامنتظره: هر دو جدول داده واقعی دارند؛ برای ایمنی دست نمی‌زنیم
+                return
+
+        if self._table_exists(connection, "facility_types"):
+            if self._row_count(connection, "facility_types") == 0:
+                connection.execute("DROP TABLE facility_types")
+
+        connection.execute(
+            """
+            CREATE TABLE facility_types (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                type_key TEXT UNIQUE NOT NULL,
+                type_name TEXT NOT NULL,
+                description TEXT,
+                is_active INTEGER DEFAULT 1,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
+        connection.execute(
+            "INSERT INTO facility_types (type_key, type_name) VALUES ('hospital', 'بیمارستان')"
+        )
+        connection.commit()
+
+        hospital_type_id = connection.execute(
+            "SELECT id FROM facility_types WHERE type_key = 'hospital'"
+        ).fetchone()[0]
+
+        connection.execute("ALTER TABLE hospitals RENAME TO facilities")
+        if not self._column_exists(connection, "facilities", "facility_name"):
+            connection.execute("ALTER TABLE facilities RENAME COLUMN hospital_name TO facility_name")
+        if not self._column_exists(connection, "facilities", "facility_code"):
+            connection.execute("ALTER TABLE facilities RENAME COLUMN hospital_code TO facility_code")
+        if not self._column_exists(connection, "facilities", "facility_type_id"):
+            connection.execute(
+                "ALTER TABLE facilities ADD COLUMN facility_type_id INTEGER REFERENCES facility_types(id)"
+            )
+        connection.execute(
+            "UPDATE facilities SET facility_type_id = ? WHERE facility_type_id IS NULL",
+            (hospital_type_id,),
+        )
+
+        if not self._column_exists(connection, "categories", "facility_type_id"):
+            connection.execute(
+                "ALTER TABLE categories ADD COLUMN facility_type_id INTEGER REFERENCES facility_types(id)"
+            )
+        connection.execute(
+            "UPDATE categories SET facility_type_id = ? WHERE facility_type_id IS NULL",
+            (hospital_type_id,),
+        )
+
+        if not self._column_exists(connection, "visits", "facility_id"):
+            connection.execute("ALTER TABLE visits RENAME COLUMN hospital_id TO facility_id")
+
+        connection.commit()
+
+    def _migrate_v3_domains(self, connection: sqlite3.Connection) -> None:
+        """مهاجرت نسخه سوم: افزودن لایه حوزه کلان ارزیابی."""
+        if not self._table_exists(connection, "facilities"):
+            return  # هنوز مهاجرت نسخه دوم انجام نشده؛ این مرحله باید بعداً اجرا شود
+
+        already_migrated = (
+            self._table_exists(connection, "assessment_domains")
+            and self._column_exists(connection, "categories", "domain_id")
+            and self._column_exists(connection, "visits", "domain_id")
+        )
+        if already_migrated:
+            return
+
+        if self._table_exists(connection, "assessment_domains"):
+            if self._row_count(connection, "assessment_domains") == 0:
+                connection.execute("DROP TABLE assessment_domains")
+
+        if not self._table_exists(connection, "assessment_domains"):
+            connection.execute(
+                """
+                CREATE TABLE assessment_domains (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    domain_key TEXT UNIQUE NOT NULL,
+                    domain_name TEXT NOT NULL,
+                    description TEXT,
+                    display_order INTEGER DEFAULT 0,
+                    is_active INTEGER DEFAULT 1,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )
+
+        connection.execute(
+            "INSERT OR IGNORE INTO assessment_domains (domain_key, domain_name, display_order) "
+            "VALUES ('physical_security', 'حفاظت فیزیکی', 1)"
+        )
+        connection.commit()
+
+        physical_security_domain_id = connection.execute(
+            "SELECT id FROM assessment_domains WHERE domain_key = 'physical_security'"
+        ).fetchone()[0]
+
+        if not self._column_exists(connection, "categories", "domain_id"):
+            connection.execute(
+                "ALTER TABLE categories ADD COLUMN domain_id INTEGER REFERENCES assessment_domains(id)"
+            )
+        connection.execute(
+            "UPDATE categories SET domain_id = ? WHERE domain_id IS NULL",
+            (physical_security_domain_id,),
+        )
+
+        if not self._column_exists(connection, "visits", "domain_id"):
+            connection.execute(
+                "ALTER TABLE visits ADD COLUMN domain_id INTEGER REFERENCES assessment_domains(id)"
+            )
+        connection.execute(
+            "UPDATE visits SET domain_id = ? WHERE domain_id IS NULL",
+            (physical_security_domain_id,),
+        )
+
         connection.commit()
 
     # ------------------------------------------------------------ عملیات پایه
