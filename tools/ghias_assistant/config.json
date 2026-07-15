@@ -1,0 +1,8 @@
+{
+    "project_name": "GHIAS",
+    "version": "0.4",
+    "auto_report": true,
+    "auto_commit": false,
+    "auto_push": false,
+    "report_path": "docs/DAILY_REPORTS/AUTO"
+}
