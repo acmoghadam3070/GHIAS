@@ -4,18 +4,14 @@
 """
 GHIAS Assistant
 Auto Sync Engine
-Version: 0.9.2
-
-Features:
-- Git change detection
-- Daily report generation
-- Commit manager integration
-- Remote sync check
+Version: 1.0.0
 """
 
 import subprocess
 from pathlib import Path
 from datetime import datetime
+
+from report_generator import create_report
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -26,7 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent
 def run_command(command):
 
     try:
-
         result = subprocess.check_output(
             command,
             shell=True,
@@ -37,9 +32,16 @@ def run_command(command):
 
         return result.strip()
 
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
+        return str(e)
 
-        return e.output.strip()
+
+
+def get_branch():
+
+    return run_command(
+        "git branch --show-current"
+    )
 
 
 
@@ -56,53 +58,21 @@ def get_changes():
 
 
 
-def pull_updates():
+def show_header():
 
-    print()
-
-    print("Checking remote updates...")
-
-    result = run_command(
-        "git pull"
-    )
-
-    print(result)
+    print("=" * 45)
+    print(" GHIAS Auto Sync v1.0.0 ")
+    print("=" * 45)
 
 
 
-def create_daily_report():
-
-    print()
-
-    work = input(
-        "What did you do today?\n> "
-    )
-
-
-    generator = (
-        BASE_DIR /
-        "report_generator.py"
-    )
-
-
-    subprocess.run(
-        [
-            "python",
-            str(generator),
-        ],
-        cwd=PROJECT_ROOT
-    )
-
-
-
-def run_commit_manager():
+def create_commit():
 
     manager = (
         BASE_DIR /
         "modules" /
         "commit_manager.py"
     )
-
 
     subprocess.run(
         [
@@ -114,15 +84,16 @@ def run_commit_manager():
 
 
 
-def show_header():
+def check_remote():
 
-    print("=" * 45)
+    print()
+    print("Checking remote updates...")
 
-    print(
-        " GHIAS Auto Sync v0.9.2 "
+    result = run_command(
+        "git pull"
     )
 
-    print("=" * 45)
+    print(result)
 
 
 
@@ -130,55 +101,79 @@ def main():
 
     show_header()
 
-
     print()
 
-    print("Checking local changes...")
+    print("Branch:")
+    print(get_branch())
 
+    print()
 
     changes = get_changes()
 
 
-    if changes:
-
-        print()
-
-        print(
-            "Detected Changes:"
-        )
-
-
-        for item in changes:
-
-            print(
-                "-",
-                item
-            )
-
-
-        print()
-
-
-        answer = input(
-            "Create daily report and commit? (y/n): "
-        )
-
-
-        if answer.lower() == "y":
-
-            create_daily_report()
-
-            run_commit_manager()
-
-
-    else:
+    if not changes:
 
         print(
             "No local changes detected."
         )
 
+        check_remote()
 
-    pull_updates()
+        return
+
+
+
+    print("Detected Changes:")
+
+    for item in changes:
+
+        print(
+            "-",
+            item
+        )
+
+
+    print()
+
+
+    answer = input(
+        "Create report and commit? (y/n): "
+    )
+
+
+    if answer.lower() != "y":
+
+        print(
+            "Cancelled."
+        )
+
+        return
+
+
+
+    work = input(
+        "\nWhat did you do today?\n> "
+    )
+
+
+    report = create_report(
+        work
+    )
+
+
+    print()
+
+    print(
+        "Daily Report Created:"
+    )
+
+    print(report)
+
+
+
+    print()
+
+    create_commit()
 
 
     print()
