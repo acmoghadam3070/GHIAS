@@ -1,8 +1,22 @@
 {
     "project_name": "GHIAS",
-    "version": "0.4",
-    "auto_report": true,
-    "auto_commit": false,
+    "version": "0.9.1",
+
+    "auto_sync": true,
+    "auto_commit": true,
     "auto_push": false,
-    "report_path": "docs/DAILY_REPORTS/AUTO"
+
+    "daily_report": true,
+
+    "ignore_files": [
+        "__pycache__",
+        ".venv",
+        ".git",
+        "*.pyc"
+    ],
+
+    "branches": {
+        "development": "feature/project-management",
+        "stable": "main"
+    }
 }
