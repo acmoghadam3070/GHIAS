@@ -142,13 +142,14 @@ class LauncherWindow(QMainWindow):
             return
 
         facility_id = dialog.selected_facility_id
+        domain_id = dialog.selected_domain_id
         inspector_id = dialog.selected_inspector_id
 
-        open_visit = repository.get_open_visit(facility_id, inspector_id)
+        open_visit = repository.get_open_visit(facility_id, domain_id, inspector_id)
         if open_visit is not None:
             visit_id = open_visit["id"]
         else:
-            visit_id = repository.create_visit(facility_id, inspector_id)
+            visit_id = repository.create_visit(facility_id, domain_id, inspector_id)
 
         window = AssessmentWindow(repository, visit_id)
         window.show()

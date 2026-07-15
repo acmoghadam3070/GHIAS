@@ -42,6 +42,7 @@ PROJECT_ROOT: Path = APP_DIR.parent
 sys.path.insert(0, str(PROJECT_ROOT / "database"))
 
 from database import Database, get_database  # noqa: E402
+from import_excel_questions import ExcelImporter  # noqa: E402
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
@@ -49,6 +50,7 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QApplication,
     QComboBox,
+    QFileDialog,
     QFormLayout,
     QFrame,
     QHBoxLayout,
@@ -377,7 +379,13 @@ class QuestionDesignerWindow(QMainWindow):
         self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("جستجو بر اساس کد یا متن سؤال...")
         self.search_edit.textChanged.connect(self._on_search_changed)
-        search_row.addWidget(self.search_edit)
+        search_row.addWidget(self.search_edit, stretch=1)
+
+        import_button = QPushButton("درون‌ریزی از اکسل")
+        import_button.setObjectName("PrimaryButton")
+        import_button.clicked.connect(self._on_import_excel)
+        search_row.addWidget(import_button)
+
         center_layout.addLayout(search_row)
 
         self.table = QTableWidget(0, 4)
@@ -514,6 +522,43 @@ class QuestionDesignerWindow(QMainWindow):
             self.table.setItem(row_index, 3, QTableWidgetItem(question["answer_type"]))
 
         self.statusBar().showMessage(f"تعداد سؤالات نمایش داده‌شده: {len(questions)}")
+
+    def _on_import_excel(self) -> None:
+        """باز کردن دیالوگ انتخاب فایل اکسل و اجرای Import روی پایگاه داده."""
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "انتخاب فایل اکسل سؤالات", "", "فایل اکسل (*.xlsx)"
+        )
+        if not file_path:
+            return
+
+        importer = ExcelImporter(self.repository.db)
+        try:
+            importer.import_file(Path(file_path))
+        except Exception as exc:  # noqa: BLE001
+            QMessageBox.critical(
+                self, "خطا در درون‌ریزی", f"درون‌ریزی فایل اکسل با خطا مواجه شد:\n{exc}"
+            )
+            return
+
+        stats = importer.stats
+        summary_lines = [
+            f"نوع سازمان جدید ساخته‌شده:   {stats['facility_types_created']}",
+            f"حوزه کلان جدید ساخته‌شده:    {stats['domains_created']}",
+            f"زیرحوزه جدید ساخته‌شده:      {stats['categories_created']}",
+            f"سؤال جدید افزوده‌شده:        {stats['questions_inserted']}",
+            f"سؤال بروزرسانی‌شده:          {stats['questions_updated']}",
+            f"ردیف رد‌شده (ناقص):          {stats['rows_skipped']}",
+        ]
+        if importer.skipped_rows:
+            summary_lines.append("")
+            summary_lines.append("ردیف‌های رد‌شده:")
+            for row_number, reason in importer.skipped_rows:
+                summary_lines.append(f"  ردیف {row_number}: {reason}")
+
+        QMessageBox.information(self, "نتیجه درون‌ریزی از اکسل", "\n".join(summary_lines))
+
+        # بازخوانی کامل حوزه‌ها، چون ممکن است زیرحوزه‌های تازه اضافه شده باشند
+        self._load_categories()
 
     def _on_search_changed(self, _text: str) -> None:
         self._refresh_table()

@@ -31,11 +31,13 @@ sys.path.insert(0, str(APP_DIR))
 
 from database import Database  # noqa: E402
 from dashboard_repository import DashboardRepository  # noqa: E402
+from report_engine import ReportEngine  # noqa: E402
 
 from PySide6.QtCore import QDateTime, Qt
 from PySide6.QtGui import QColor, QPainter
 from PySide6.QtWidgets import (
     QComboBox,
+    QFileDialog,
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -43,6 +45,7 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QMainWindow,
     QMessageBox,
+    QPushButton,
     QSplitter,
     QVBoxLayout,
     QWidget,
@@ -79,6 +82,7 @@ class DashboardWindow(QMainWindow):
     def __init__(self, repository: DashboardRepository):
         super().__init__()
         self.repository = repository
+        self.report_engine = ReportEngine()
 
         self.facilities: list[dict[str, Any]] = []
         self.visits: list[dict[str, Any]] = []
@@ -136,6 +140,11 @@ class DashboardWindow(QMainWindow):
         self.visit_combo.setMinimumWidth(160)
         self.visit_combo.currentIndexChanged.connect(self._on_visit_changed)
         top_row.addWidget(self.visit_combo)
+
+        self.report_button = QPushButton("تولید گزارش Word")
+        self.report_button.setObjectName("PrimaryButton")
+        self.report_button.clicked.connect(self._on_generate_report)
+        top_row.addWidget(self.report_button)
         main_layout.addLayout(top_row)
 
         self.summary_label = QLabel("امتیاز کلی: —")
@@ -223,6 +232,30 @@ class DashboardWindow(QMainWindow):
             self._on_visit_changed(self.visit_combo.currentIndex())
 
         self._render_trend_chart()
+
+    def _on_generate_report(self) -> None:
+        if self.current_visit_id is None:
+            QMessageBox.information(self, "تولید گزارش", "ابتدا یک بازدید را انتخاب کنید.")
+            return
+
+        visit = self.repository.get_visit(self.current_visit_id)
+        breakdown = self.repository.get_category_breakdown(self.current_visit_id)
+        recommendations = self.repository.get_recommendations(self.current_visit_id)
+
+        default_name = f"گزارش_{visit['facility_name']}_{visit['visit_date']}.docx"
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "ذخیره گزارش", default_name, "فایل Word (*.docx)"
+        )
+        if not file_path:
+            return
+
+        try:
+            self.report_engine.generate_visit_report(visit, breakdown, recommendations, Path(file_path))
+        except Exception as exc:  # noqa: BLE001
+            QMessageBox.critical(self, "خطا", f"تولید گزارش با خطا مواجه شد:\n{exc}")
+            return
+
+        QMessageBox.information(self, "گزارش آماده شد", f"گزارش با موفقیت ذخیره شد:\n{file_path}")
 
     # ------------------------------------------------------------- بازدید انتخابی
     def _on_visit_changed(self, index: int) -> None:

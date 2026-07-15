@@ -79,6 +79,7 @@ class StartVisitDialog(QDialog):
         self.repository = repository
         self.facility_types: list[dict[str, Any]] = []
         self.selected_facility_id: Optional[int] = None
+        self.selected_domain_id: Optional[int] = None
         self.selected_inspector_id: Optional[int] = None
 
         self.setWindowTitle("شروع ارزیابی جدید")
@@ -95,6 +96,15 @@ class StartVisitDialog(QDialog):
         type_add_button.clicked.connect(self._add_new_facility_type)
         type_row.addWidget(type_add_button)
         layout.addLayout(type_row)
+
+        layout.addWidget(QLabel("حوزه کلان ارزیابی:"))
+        domain_row = QHBoxLayout()
+        self.domain_combo = QComboBox()
+        domain_row.addWidget(self.domain_combo, stretch=1)
+        domain_add_button = QPushButton("+ افزودن")
+        domain_add_button.clicked.connect(self._add_new_domain)
+        domain_row.addWidget(domain_add_button)
+        layout.addLayout(domain_row)
 
         layout.addWidget(QLabel("نام واحد (مثلاً نام بیمارستان):"))
         facility_row = QHBoxLayout()
@@ -115,6 +125,7 @@ class StartVisitDialog(QDialog):
         layout.addLayout(inspector_row)
 
         self._load_facility_types()
+        self._load_domains()
         self._load_inspectors()
         self.type_combo.currentIndexChanged.connect(self._on_type_changed)
 
@@ -155,6 +166,18 @@ class StartVisitDialog(QDialog):
             if index >= 0:
                 self.facility_combo.setCurrentIndex(index)
 
+    def _load_domains(self, select_id: Optional[int] = None) -> None:
+        self.domain_combo.blockSignals(True)
+        self.domain_combo.clear()
+        for domain in self.repository.list_domains():
+            self.domain_combo.addItem(domain["domain_name"], domain["id"])
+        self.domain_combo.blockSignals(False)
+
+        if select_id is not None:
+            index = self.domain_combo.findData(select_id)
+            if index >= 0:
+                self.domain_combo.setCurrentIndex(index)
+
     def _load_inspectors(self, select_id: Optional[int] = None) -> None:
         self.inspector_combo.blockSignals(True)
         self.inspector_combo.clear()
@@ -186,6 +209,22 @@ class StartVisitDialog(QDialog):
                 "سؤالات این نوع سازمان را اضافه کنید.",
             )
 
+    def _add_new_domain(self) -> None:
+        name, ok = QInputDialog.getText(
+            self, "حوزه کلان ارزیابی جدید", "نام حوزه کلان را وارد کنید (مثلاً امنیت اطلاعات، پدافند غیرعامل):"
+        )
+        if ok and name.strip():
+            new_id = self.repository.add_domain(name.strip())
+            self._load_domains(select_id=new_id)
+            QMessageBox.information(
+                self,
+                "حوزه کلان اضافه شد",
+                f"حوزه کلان «{name.strip()}» ساخته شد.\n\n"
+                "توجه: هنوز هیچ زیرحوزه یا سؤالی برای این حوزه تعریف نشده است. "
+                "برای ارزیابی واقعی، ابتدا باید از بخش طراح بانک سؤالات، زیرحوزه‌ها و "
+                "سؤالات این حوزه را اضافه کنید.",
+            )
+
     def _add_new_facility(self) -> None:
         facility_type_id = self.type_combo.currentData()
         if facility_type_id is None:
@@ -205,18 +244,20 @@ class StartVisitDialog(QDialog):
     # ------------------------------------------------------------- تأیید
     def _on_accept(self) -> None:
         facility_id = self.facility_combo.currentData()
+        domain_id = self.domain_combo.currentData()
         inspector_id = self.inspector_combo.currentData()
 
-        if facility_id is None or inspector_id is None:
+        if facility_id is None or domain_id is None or inspector_id is None:
             QMessageBox.warning(
                 self,
                 "خطا",
-                "لطفاً یک واحد و یک ارزیاب انتخاب کنید.\n"
+                "لطفاً یک واحد، یک حوزه کلان ارزیابی، و یک ارزیاب انتخاب کنید.\n"
                 "اگر فهرست خالی است، ابتدا با دکمه «+ افزودن» یک مورد جدید بسازید.",
             )
             return
 
         self.selected_facility_id = facility_id
+        self.selected_domain_id = domain_id
         self.selected_inspector_id = inspector_id
         self.accept()
 
@@ -326,8 +367,9 @@ class AssessmentWindow(QMainWindow):
 
         visit = self.repository.get_visit(visit_id)
         self.facility_type_id = visit["facility_type_id"]
+        self.domain_id = visit["domain_id"]
         self.setWindowTitle(
-            f"GHIAS | ارزیابی میدانی — {visit['facility_name']} — ارزیاب: {visit['inspector_name']}"
+            f"GHIAS | ارزیابی میدانی — {visit['facility_name']} — حوزه: {visit['domain_name']} — ارزیاب: {visit['inspector_name']}"
         )
         self.resize(1300, 780)
         self.setLayoutDirection(Qt.RightToLeft)
@@ -401,7 +443,7 @@ class AssessmentWindow(QMainWindow):
 
     # ------------------------------------------------------------- حوزه‌ها
     def _load_categories(self) -> None:
-        self.categories = self.repository.list_categories(self.facility_type_id)
+        self.categories = self.repository.list_categories(self.facility_type_id, self.domain_id)
         self.domain_list.blockSignals(True)
         self.domain_list.clear()
         for category in self.categories:

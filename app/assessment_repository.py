@@ -40,6 +40,34 @@ class AssessmentRepository:
     def __init__(self, db: Database):
         self.db = db
 
+    # ------------------------------------------------------------- حوزه‌های کلان ارزیابی
+    def list_domains(self) -> list[dict[str, Any]]:
+        rows = self.db.query(
+            "SELECT id, domain_key, domain_name FROM assessment_domains "
+            "WHERE is_active = 1 ORDER BY display_order"
+        )
+        return [dict(row) for row in rows]
+
+    def add_domain(self, domain_name: str) -> int:
+        """
+        افزودن یک حوزه کلان ارزیابی کاملاً جدید (مثلاً «امنیت اطلاعات»
+        یا «پدافند غیرعامل»).
+        نکته مهم: بلافاصله بعد از این کار، هیچ زیرحوزه یا سؤالی برای این
+        حوزه وجود ندارد؛ باید بعداً از طریق طراح بانک سؤالات اضافه شود.
+        """
+        base_key = slugify(domain_name)
+        key = base_key
+        suffix = 1
+        existing_keys = {row["domain_key"] for row in self.db.query("SELECT domain_key FROM assessment_domains")}
+        while key in existing_keys:
+            suffix += 1
+            key = f"{base_key}-{suffix}"
+
+        return self.db.execute(
+            "INSERT INTO assessment_domains (domain_key, domain_name) VALUES (?, ?)",
+            (key, domain_name.strip()),
+        )
+
     # ------------------------------------------------------------- انواع سازمان
     def list_facility_types(self) -> list[dict[str, Any]]:
         rows = self.db.query(
@@ -98,36 +126,39 @@ class AssessmentRepository:
         )
 
     # ------------------------------------------------------------- بازدیدها
-    def get_open_visit(self, facility_id: int, inspector_id: int) -> Optional[dict[str, Any]]:
+    def get_open_visit(self, facility_id: int, domain_id: int, inspector_id: int) -> Optional[dict[str, Any]]:
         """
-        جست‌وجوی یک بازدید ناتمام (وضعیت IN_PROGRESS) برای همین واحد
-        و همین ارزیاب، تا کاربر بتواند ارزیابی نیمه‌کاره را ادامه دهد.
+        جست‌وجوی یک بازدید ناتمام (وضعیت IN_PROGRESS) برای همین واحد،
+        همین حوزه کلان، و همین ارزیاب، تا کاربر بتواند ارزیابی نیمه‌کاره
+        را ادامه دهد.
         """
         row = self.db.query_one(
             """
             SELECT * FROM visits
-            WHERE facility_id = ? AND inspector_id = ? AND status = 'IN_PROGRESS'
+            WHERE facility_id = ? AND domain_id = ? AND inspector_id = ? AND status = 'IN_PROGRESS'
             ORDER BY id DESC LIMIT 1
             """,
-            (facility_id, inspector_id),
+            (facility_id, domain_id, inspector_id),
         )
         return dict(row) if row is not None else None
 
-    def create_visit(self, facility_id: int, inspector_id: int) -> int:
+    def create_visit(self, facility_id: int, domain_id: int, inspector_id: int) -> int:
         return self.db.execute(
             """
-            INSERT INTO visits (facility_id, inspector_id, visit_date, status)
-            VALUES (?, ?, DATE('now'), 'IN_PROGRESS')
+            INSERT INTO visits (facility_id, domain_id, inspector_id, visit_date, status)
+            VALUES (?, ?, ?, DATE('now'), 'IN_PROGRESS')
             """,
-            (facility_id, inspector_id),
+            (facility_id, domain_id, inspector_id),
         )
 
     def get_visit(self, visit_id: int) -> Optional[dict[str, Any]]:
         row = self.db.query_one(
             """
-            SELECT v.*, f.facility_name, f.facility_type_id, i.full_name AS inspector_name
+            SELECT v.*, f.facility_name, f.facility_type_id,
+                   ad.domain_name, i.full_name AS inspector_name
             FROM visits v
             JOIN facilities f ON f.id = v.facility_id
+            JOIN assessment_domains ad ON ad.id = v.domain_id
             JOIN inspectors i ON i.id = v.inspector_id
             WHERE v.id = ?
             """,
@@ -149,15 +180,17 @@ class AssessmentRepository:
         )
 
     # ------------------------------------------------------------- حوزه‌ها و سؤالات
-    def list_categories(self, facility_type_id: int) -> list[dict[str, Any]]:
+    def list_categories(self, facility_type_id: int, domain_id: int) -> list[dict[str, Any]]:
         """
-        فهرست حوزه‌های ارزیابی، فقط برای نوع سازمانی که این بازدید به آن
-        تعلق دارد (مثلاً فقط حوزه‌های بیمارستانی، نه حوزه‌های کارخانه).
+        فهرست زیرحوزه‌های ارزیابی، فقط برای ترکیب (نوع سازمان + حوزه کلان)
+        این بازدید (مثلاً فقط زیرحوزه‌های «حفاظت فیزیکی بیمارستان»،
+        نه زیرحوزه‌های «امنیت اطلاعات کارخانه»).
         """
         rows = self.db.query(
             "SELECT id, category_key, category_name FROM categories "
-            "WHERE facility_type_id = ? AND is_active = 1 ORDER BY display_order",
-            (facility_type_id,),
+            "WHERE facility_type_id = ? AND domain_id = ? AND is_active = 1 "
+            "ORDER BY display_order",
+            (facility_type_id, domain_id),
         )
         return [dict(row) for row in rows]
 

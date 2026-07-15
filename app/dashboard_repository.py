@@ -99,8 +99,9 @@ class DashboardRepository:
 
         categories = self.db.query(
             "SELECT id, category_name FROM categories "
-            "WHERE facility_type_id = ? AND is_active = 1 ORDER BY display_order",
-            (visit["facility_type_id"],),
+            "WHERE facility_type_id = ? AND domain_id = ? AND is_active = 1 "
+            "ORDER BY display_order",
+            (visit["facility_type_id"], visit["domain_id"]),
         )
         answers_rows = self.db.query("SELECT * FROM answers WHERE visit_id = ?", (visit_id,))
         answers_by_question = {row["question_id"]: dict(row) for row in answers_rows}
