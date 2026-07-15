@@ -4,7 +4,7 @@
 """
 GHIAS Assistant
 Commit Manager Module
-v0.8.1
+v0.8.2
 """
 
 import subprocess
@@ -36,7 +36,7 @@ def run_git(command):
 def get_changes():
 
     result = run_git(
-        "git status --porcelain"
+        "git status --porcelain=v1"
     )
 
     changes = []
@@ -48,21 +48,39 @@ def get_changes():
 
     for line in result.splitlines():
 
-        status = line[:2]
+        if len(line) < 3:
+            continue
+
+
+        status = line[:2].strip()
+
         path = line[3:].strip()
 
 
         if status == "??":
+
             change_type = "Added"
 
+
         elif "M" in status:
+
             change_type = "Modified"
 
+
         elif "D" in status:
+
             change_type = "Deleted"
 
+
+        elif "R" in status:
+
+            change_type = "Renamed"
+
+
         else:
+
             change_type = "Changed"
+
 
 
         changes.append(
@@ -96,11 +114,12 @@ def generate_commit_message(changes):
 
 def create_commit():
 
+
     changes = get_changes()
 
 
     print("=" * 45)
-    print(" GHIAS Commit Manager v0.8.1 ")
+    print(" GHIAS Commit Manager v0.8.2 ")
     print("=" * 45)
 
 
@@ -129,6 +148,7 @@ def create_commit():
         print(
             f"{item['type']}: {item['file']}"
         )
+
 
 
     print()
@@ -190,6 +210,7 @@ def create_commit():
 
 
     return True
+
 
 
 
