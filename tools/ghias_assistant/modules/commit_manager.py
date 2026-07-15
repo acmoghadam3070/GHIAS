@@ -4,7 +4,7 @@
 """
 GHIAS Assistant
 Commit Manager Module
-v0.8
+v0.8.1
 """
 
 import subprocess
@@ -13,7 +13,6 @@ from datetime import datetime
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-
 
 
 def run_git(command):
@@ -40,45 +39,75 @@ def get_changes():
         "git status --porcelain"
     )
 
+    changes = []
+
+
     if not result:
-        return []
-
-    return [
-        line[3:].strip()
-        for line in result.splitlines()
-    ]
+        return changes
 
 
+    for line in result.splitlines():
 
-def generate_commit_message():
-
-    files = get_changes()
-
-    if not files:
-        return "No changes"
+        status = line[:2]
+        path = line[3:].strip()
 
 
+        if status == "??":
+            change_type = "Added"
 
-    now = datetime.now()
+        elif "M" in status:
+            change_type = "Modified"
+
+        elif "D" in status:
+            change_type = "Deleted"
+
+        else:
+            change_type = "Changed"
 
 
-    message = (
-        f"GHIAS Assistant update "
-        f"{now.strftime('%Y-%m-%d')} "
-        f"({len(files)} files changed)"
+        changes.append(
+            {
+                "type": change_type,
+                "file": path
+            }
+        )
+
+
+    return changes
+
+
+
+def generate_commit_message(changes):
+
+    count = len(changes)
+
+    date = datetime.now().strftime(
+        "%Y-%m-%d"
     )
 
 
-    return message
+    return (
+        f"GHIAS Assistant update "
+        f"{date} "
+        f"({count} files changed)"
+    )
 
 
 
-def create_commit(message=None):
+def create_commit():
 
-    files = get_changes()
+    changes = get_changes()
 
 
-    if not files:
+    print("=" * 45)
+    print(" GHIAS Commit Manager v0.8.1 ")
+    print("=" * 45)
+
+
+    print()
+
+
+    if not changes:
 
         print(
             "No changes detected."
@@ -88,30 +117,27 @@ def create_commit(message=None):
 
 
 
-    print("=" * 45)
-    print(" GHIAS Commit Manager v0.8 ")
-    print("=" * 45)
-
+    print(
+        "Detected Changes:"
+    )
 
     print()
 
-    print("Changed files:")
 
-
-    for file in files:
+    for item in changes:
 
         print(
-            "-",
-            file
+            f"{item['type']}: {item['file']}"
         )
 
 
-    if not message:
-
-        message = generate_commit_message()
-
-
     print()
+
+
+    message = generate_commit_message(
+        changes
+    )
+
 
     print(
         "Commit Message:"
@@ -159,12 +185,11 @@ def create_commit(message=None):
     print()
 
     print(
-        "Commit completed."
+        "Commit completed successfully."
     )
 
 
     return True
-
 
 
 
