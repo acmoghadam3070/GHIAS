@@ -353,10 +353,11 @@ class QuestionCard(QFrame):
 class AssessmentWindow(QMainWindow):
     """پنجره اصلی فرم ارزیابی میدانی برای یک بازدید مشخص."""
 
-    def __init__(self, repository: AssessmentRepository, visit_id: int):
+    def __init__(self, repository: AssessmentRepository, visit_id: int, restricted: bool = False):
         super().__init__()
         self.repository = repository
         self.visit_id = visit_id
+        self.restricted = restricted
         self.scoring_engine = ScoringEngine()
         self.recommendation_engine = RecommendationEngine()
 
@@ -406,6 +407,8 @@ class AssessmentWindow(QMainWindow):
         self.finish_button = QPushButton("پایان ارزیابی و ثبت نهایی")
         self.finish_button.setObjectName("DangerButton")
         self.finish_button.clicked.connect(self._on_finish_visit)
+        if self.restricted:
+            self.finish_button.setVisible(False)
         sidebar_layout.addWidget(self.finish_button)
 
         root_layout.addWidget(sidebar)
@@ -418,6 +421,9 @@ class AssessmentWindow(QMainWindow):
 
         self.summary_label = QLabel("امتیاز کلی: بدون داده")
         self.summary_label.setObjectName("SectionHeader")
+        if self.restricted:
+            self.summary_label.setText("در حال پاسخ‌دهی به سؤالات")
+            self.summary_label.setVisible(True)
         main_layout.addWidget(self.summary_label)
 
         self.header_label = QLabel("یک حوزه را از فهرست کنار صفحه انتخاب کنید")
@@ -504,6 +510,9 @@ class AssessmentWindow(QMainWindow):
         QMessageBox.information(self, "ذخیره موفق", "پاسخ‌های این حوزه ذخیره شد.")
 
     def _update_category_result(self, category_id: int) -> None:
+        if self.restricted:
+            return  # مصاحبه‌شونده حق دیدن امتیاز و وضعیت ریسک حوزه‌ها را ندارد
+
         category = next(c for c in self.categories if c["id"] == category_id)
         questions = self.repository.list_questions(category_id)
         answers_map = self.repository.get_answers_for_visit(self.visit_id)
@@ -537,6 +546,9 @@ class AssessmentWindow(QMainWindow):
         item.setForeground(QBrush(QColor(color)))
 
     def _recompute_overall(self) -> None:
+        if self.restricted:
+            return  # مصاحبه‌شونده حق دیدن امتیاز و وضعیت ریسک را ندارد
+
         if not self.category_results:
             # اگر هنوز هیچ حوزه‌ای ذخیره نشده، امتیاز هر حوزه‌ای که از قبل
             # پاسخ دارد را بازسازی می‌کنیم تا بعد از «ادامه ارزیابی» هم

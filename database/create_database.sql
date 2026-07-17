@@ -74,8 +74,61 @@ CREATE TABLE IF NOT EXISTS facilities (
 
 
 -- =====================================================================
+-- جدول کاربران سامانه
+-- سه نقش: admin (دسترسی کامل)، inspector (فقط ارزیابی)،
+-- interviewee (فقط پاسخ به سؤالات).
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    password_salt TEXT NOT NULL,
+    full_name TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'inspector',
+    is_active INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_login_at DATETIME
+);
+
+-- حساب پیش‌فرض ادمین. نام کاربری: admin | رمز عبور: ghias-admin-1404
+-- به‌شدت توصیه می‌شود بعد از اولین ورود، این رمز از داخل «مدیریت کاربران» تغییر کند.
+INSERT OR IGNORE INTO users (username, password_hash, password_salt, full_name, role) VALUES
+    ('admin', '6850fa6e5bd1a0e3b674ef3f78e24117058ae16d401155f82233fdbaa52d66ff',
+     '030eb4b4671b6bee1b9fc5875f209f0d', 'مدیر سامانه', 'admin');
+
+
+-- =====================================================================
+-- جدول تخصیص‌ها
+-- ادمین یک ترکیب (واحد + حوزه کلان) را به یک کاربر (ارزیاب یا
+-- مصاحبه‌شونده) تخصیص می‌دهد. آن کاربر با ورود به سامانه، فقط همین
+-- تخصیص‌ها را می‌بیند.
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS assignments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    facility_id INTEGER NOT NULL,
+    domain_id INTEGER NOT NULL,
+    assigned_user_id INTEGER NOT NULL,
+    assigned_by_user_id INTEGER NOT NULL,
+    visit_id INTEGER,
+    status TEXT NOT NULL DEFAULT 'PENDING',
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (facility_id) REFERENCES facilities(id) ON DELETE CASCADE,
+    FOREIGN KEY (domain_id) REFERENCES assessment_domains(id) ON DELETE RESTRICT,
+    FOREIGN KEY (assigned_user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (assigned_by_user_id) REFERENCES users(id) ON DELETE RESTRICT,
+    FOREIGN KEY (visit_id) REFERENCES visits(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_assignment_user
+ON assignments(assigned_user_id);
+
+
+-- =====================================================================
 -- جدول ارزیابان
--- افرادی که ارزیابی میدانی را انجام می‌دهند.
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS inspectors (

@@ -76,9 +76,11 @@ class DashboardRepository:
     def get_visit(self, visit_id: int) -> dict[str, Any] | None:
         row = self.db.query_one(
             """
-            SELECT v.*, f.facility_name, f.facility_type_id, i.full_name AS inspector_name
+            SELECT v.*, f.facility_name, f.facility_type_id,
+                   ad.domain_name, i.full_name AS inspector_name
             FROM visits v
             JOIN facilities f ON f.id = v.facility_id
+            JOIN assessment_domains ad ON ad.id = v.domain_id
             JOIN inspectors i ON i.id = v.inspector_id
             WHERE v.id = ?
             """,

@@ -22,6 +22,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from typing import Any, Optional
+import getpass
 
 APP_DIR: Path = Path(__file__).resolve().parent
 PROJECT_ROOT: Path = APP_DIR.parent
@@ -250,7 +251,10 @@ class DashboardWindow(QMainWindow):
             return
 
         try:
-            self.report_engine.generate_visit_report(visit, breakdown, recommendations, Path(file_path))
+            self.report_engine.generate_visit_report(
+                visit, breakdown, recommendations, Path(file_path),
+                generated_by=getpass.getuser(),
+            )
         except Exception as exc:  # noqa: BLE001
             QMessageBox.critical(self, "خطا", f"تولید گزارش با خطا مواجه شد:\n{exc}")
             return
