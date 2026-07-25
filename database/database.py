@@ -119,6 +119,8 @@ class Database:
         connection.execute("PRAGMA foreign_keys = OFF;")
         self._migrate_v2_facility_types(connection)
         self._migrate_v3_domains(connection)
+        self._migrate_v4_user_security(connection)
+        self._migrate_v5_registry_fields(connection)
         connection.execute("PRAGMA foreign_keys = ON;")
 
     def _migrate_v2_facility_types(self, connection: sqlite3.Connection) -> None:
@@ -187,6 +189,47 @@ class Database:
 
         if not self._column_exists(connection, "visits", "facility_id"):
             connection.execute("ALTER TABLE visits RENAME COLUMN hospital_id TO facility_id")
+
+        connection.commit()
+
+    def _migrate_v5_registry_fields(self, connection: sqlite3.Connection) -> None:
+        """مهاجرت نسخه پنجم: افزودن فیلدهای هویتی بیشتر به جدول سازمان‌ها."""
+        if not self._table_exists(connection, "facilities"):
+            return
+
+        new_columns = [
+            ("national_id", "TEXT"),
+            ("economic_code", "TEXT"),
+            ("logo_path", "TEXT"),
+            ("ceo_name", "TEXT"),
+            ("website", "TEXT"),
+        ]
+        for column_name, column_type in new_columns:
+            if not self._column_exists(connection, "facilities", column_name):
+                connection.execute(f"ALTER TABLE facilities ADD COLUMN {column_name} {column_type}")
+
+        connection.commit()
+
+    def _migrate_v4_user_security(self, connection: sqlite3.Connection) -> None:
+        """
+        مهاجرت نسخه چهارم: افزودن ستون‌های لازم برای قفل حساب بعد از
+        رمز اشتباه، و ورود دومرحله‌ای با پیامک (OTP). این مهاجرت فقط
+        روی پایگاه داده‌هایی اجرا می‌شود که جدول users از قبل دارند.
+        """
+        if not self._table_exists(connection, "users"):
+            return
+
+        new_columns = [
+            ("phone_number", "TEXT"),
+            ("two_factor_enabled", "INTEGER DEFAULT 0"),
+            ("otp_code", "TEXT"),
+            ("otp_expires_at", "DATETIME"),
+            ("failed_login_attempts", "INTEGER DEFAULT 0"),
+            ("locked_until", "DATETIME"),
+        ]
+        for column_name, column_type in new_columns:
+            if not self._column_exists(connection, "users", column_name):
+                connection.execute(f"ALTER TABLE users ADD COLUMN {column_name} {column_type}")
 
         connection.commit()
 

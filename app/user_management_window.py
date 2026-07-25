@@ -22,6 +22,7 @@ from auth_repository import AuthRepository, VALID_ROLES
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QCheckBox,
     QComboBox,
     QDialog,
     QDialogButtonBox,
@@ -68,6 +69,13 @@ class AddUserDialog(QDialog):
         self.password_edit.setEchoMode(QLineEdit.Password)
         layout.addRow("رمز عبور:", self.password_edit)
 
+        self.phone_edit = QLineEdit()
+        self.phone_edit.setPlaceholderText("مثلاً 09121234567")
+        layout.addRow("شماره موبایل:", self.phone_edit)
+
+        self.two_factor_checkbox = QCheckBox("فعال‌سازی ورود دومرحله‌ای با پیامک")
+        layout.addRow("", self.two_factor_checkbox)
+
         self.role_combo = QComboBox()
         for role_key, role_label in ROLE_LABELS.items():
             self.role_combo.addItem(role_label, role_key)
@@ -80,12 +88,14 @@ class AddUserDialog(QDialog):
         buttons.rejected.connect(self.reject)
         layout.addRow(buttons)
 
-    def get_values(self) -> tuple[str, str, str, str]:
+    def get_values(self) -> tuple[str, str, str, str, str, bool]:
         return (
             self.username_edit.text().strip(),
             self.password_edit.text(),
             self.full_name_edit.text().strip(),
             self.role_combo.currentData(),
+            self.phone_edit.text().strip(),
+            self.two_factor_checkbox.isChecked(),
         )
 
 
@@ -113,8 +123,10 @@ class UserManagementWindow(QMainWindow):
         header.setObjectName("SectionHeader")
         layout.addWidget(header)
 
-        self.table = QTableWidget(0, 5)
-        self.table.setHorizontalHeaderLabels(["نام کاربری", "نام کامل", "نقش", "وضعیت", "آخرین ورود"])
+        self.table = QTableWidget(0, 7)
+        self.table.setHorizontalHeaderLabels(
+            ["نام کاربری", "نام کامل", "نقش", "موبایل", "دومرحله‌ای", "وضعیت", "آخرین ورود"]
+        )
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
@@ -135,6 +147,10 @@ class UserManagementWindow(QMainWindow):
         change_password_button.clicked.connect(self._on_change_password)
         button_row.addWidget(change_password_button)
 
+        unlock_button = QPushButton("باز کردن قفل حساب")
+        unlock_button.clicked.connect(self._on_unlock_account)
+        button_row.addWidget(unlock_button)
+
         layout.addLayout(button_row)
 
     def _refresh_table(self) -> None:
@@ -146,8 +162,10 @@ class UserManagementWindow(QMainWindow):
             item0.setData(Qt.UserRole, user["id"])
             self.table.setItem(row_index, 1, QTableWidgetItem(user["full_name"]))
             self.table.setItem(row_index, 2, QTableWidgetItem(ROLE_LABELS.get(user["role"], user["role"])))
-            self.table.setItem(row_index, 3, QTableWidgetItem("فعال" if user["is_active"] else "غیرفعال"))
-            self.table.setItem(row_index, 4, QTableWidgetItem(str(user["last_login_at"] or "—")))
+            self.table.setItem(row_index, 3, QTableWidgetItem(user["phone_number"] or "—"))
+            self.table.setItem(row_index, 4, QTableWidgetItem("فعال" if user["two_factor_enabled"] else "غیرفعال"))
+            self.table.setItem(row_index, 5, QTableWidgetItem("فعال" if user["is_active"] else "غیرفعال"))
+            self.table.setItem(row_index, 6, QTableWidgetItem(str(user["last_login_at"] or "—")))
 
     def _selected_user_id(self) -> int | None:
         selected = self.table.selectedItems()
@@ -161,19 +179,29 @@ class UserManagementWindow(QMainWindow):
         if dialog.exec() != QDialog.Accepted:
             return
 
-        username, password, full_name, role = dialog.get_values()
+        username, password, full_name, role, phone_number, two_factor_enabled = dialog.get_values()
         if not username or not password or not full_name:
-            QMessageBox.warning(self, "خطا", "همه فیلدها الزامی هستند.")
+            QMessageBox.warning(self, "خطا", "نام کاربری، رمز عبور و نام کامل الزامی هستند.")
             return
 
         try:
-            self.repository.add_user(username, password, full_name, role)
+            self.repository.add_user(
+                username, password, full_name, role,
+                phone_number=phone_number, two_factor_enabled=two_factor_enabled,
+            )
         except ValueError as exc:
             QMessageBox.warning(self, "خطا", str(exc))
             return
 
         self._refresh_table()
         QMessageBox.information(self, "موفق", f"کاربر «{username}» با موفقیت افزوده شد.")
+
+    def _on_unlock_account(self) -> None:
+        user_id = self._selected_user_id()
+        if user_id is None:
+            return
+        self.repository.unlock_account(user_id)
+        QMessageBox.information(self, "موفق", "قفل حساب باز شد (در صورتی که قفل بوده باشد).")
 
     def _on_toggle_active(self) -> None:
         user_id = self._selected_user_id()

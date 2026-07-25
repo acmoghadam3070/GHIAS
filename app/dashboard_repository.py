@@ -134,6 +134,12 @@ class DashboardRepository:
 
         return results
 
+    def log_generated_report(self, visit_id: int, report_format: str, file_path: str) -> int:
+        return self.db.execute(
+            "INSERT INTO reports (visit_id, report_format, file_path) VALUES (?, ?, ?)",
+            (visit_id, report_format, file_path),
+        )
+
     # ------------------------------------------------------------- فهرست اقدامات اصلاحی
     def get_recommendations(self, visit_id: int) -> list[dict[str, Any]]:
         """فهرست اقدامات اصلاحی ثبت‌شده برای یک بازدید، مرتب‌شده بر اساس اولویت."""

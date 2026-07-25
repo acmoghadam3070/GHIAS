@@ -33,6 +33,8 @@ from assignment_repository import AssignmentRepository  # noqa: E402
 from assignment_window import AdminAssignmentWindow, MyAssignmentsWindow  # noqa: E402
 from dashboard_repository import DashboardRepository  # noqa: E402
 from dashboard_window import DashboardWindow  # noqa: E402
+from registry_repository import RegistryRepository  # noqa: E402
+from registry_window import RegistryWindow  # noqa: E402
 from auth_repository import AuthRepository  # noqa: E402
 from user_management_window import UserManagementWindow  # noqa: E402
 
@@ -101,6 +103,11 @@ class LauncherWindow(QMainWindow):
                 self._open_assignment,
             ))
             card_row.addWidget(self._build_option_card(
+                "بانک اطلاعات",
+                "مدیریت اطلاعات هویتی سازمان‌ها و اشخاص، پیوست‌ها و تاریخچه",
+                self._open_registry,
+            ))
+            card_row.addWidget(self._build_option_card(
                 "مدیریت کاربران",
                 "افزودن کاربر، تعیین نقش، فعال/غیرفعال کردن",
                 self._open_user_management,
@@ -161,6 +168,12 @@ class LauncherWindow(QMainWindow):
     def _open_user_management(self) -> None:
         repository = AuthRepository(self.db)
         window = UserManagementWindow(repository)
+        window.show()
+        self._child_windows.append(window)
+
+    def _open_registry(self) -> None:
+        repository = RegistryRepository(self.db)
+        window = RegistryWindow(repository)
         window.show()
         self._child_windows.append(window)
 

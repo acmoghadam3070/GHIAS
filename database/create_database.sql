@@ -54,12 +54,17 @@ CREATE TABLE IF NOT EXISTS facilities (
     facility_name TEXT NOT NULL,
     hospital_type TEXT,
     ownership TEXT,
+    national_id TEXT,
+    economic_code TEXT,
+    logo_path TEXT,
+    ceo_name TEXT,
     province TEXT,
     city TEXT,
     address TEXT,
     postal_code TEXT,
     phone TEXT,
     email TEXT,
+    website TEXT,
     manager_name TEXT,
     security_manager TEXT,
     beds INTEGER,
@@ -86,6 +91,12 @@ CREATE TABLE IF NOT EXISTS users (
     password_salt TEXT NOT NULL,
     full_name TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'inspector',
+    phone_number TEXT,
+    two_factor_enabled INTEGER DEFAULT 0,
+    otp_code TEXT,
+    otp_expires_at DATETIME,
+    failed_login_attempts INTEGER DEFAULT 0,
+    locked_until DATETIME,
     is_active INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_login_at DATETIME
@@ -149,6 +160,59 @@ CREATE TABLE IF NOT EXISTS inspectors (
 -- جدول حوزه‌های ارزیابی
 -- مثال: کنترل دسترسی، دوربین مداربسته، نگهبانی و غیره.
 -- =====================================================================
+
+-- =====================================================================
+-- جدول اشخاص حقیقی
+-- افرادی که ممکن است مصاحبه‌شونده یا موضوع ارزیابی (مثلاً در کانون
+-- ارزیابی شایستگی مدیران) باشند. مستقل از جدول users (که فقط برای
+-- ورود به نرم‌افزار است).
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS persons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    national_code TEXT UNIQUE,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    father_name TEXT,
+    gender TEXT,
+    birth_date TEXT,
+    position TEXT,
+    facility_id INTEGER,
+    phone TEXT,
+    mobile TEXT,
+    email TEXT,
+    address TEXT,
+    photo_path TEXT,
+    is_active INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (facility_id)
+        REFERENCES facilities(id)
+        ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_person_facility
+ON persons(facility_id);
+
+
+-- =====================================================================
+-- جدول پیوست‌ها (عمومی)
+-- عکس، نامه معرفی، نامه ارزیابی، لوگو، هر مدرک دیگری؛ هم برای اشخاص
+-- و هم برای سازمان‌ها، بدون محدودیت تعداد.
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS attachments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    owner_type TEXT NOT NULL,
+    owner_id INTEGER NOT NULL,
+    title TEXT,
+    file_path TEXT NOT NULL,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_attachment_owner
+ON attachments(owner_type, owner_id);
+
 
 CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
